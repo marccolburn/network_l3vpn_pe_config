@@ -1,0 +1,29 @@
+set routing-options router-id {{ router_id }}
+set routing-options autonomous-system {{ bgp_global_asn }}
+set protocols bgp group {{ provider_ibgp.group.name }} type internal
+set protocols bgp group {{ provider_ibgp.group.name }} local-address {{ provider_ibgp.group.local_address }}
+set protocols bgp group {{ provider_ibgp.group.name }} import {{ provider_ibgp.group.import_policy }}
+set protocols bgp group {{ provider_ibgp.group.name }} family inet-vpn unicast
+set protocols bgp group {{ provider_ibgp.group.name }} export {{ provider_ibgp.group.export_policy }}
+set protocols bgp group {{ provider_ibgp.group.name }} peer-as {{ provider_ibgp.group.asn }}
+{% for neighbor in provider_ibgp.group.neighbors %}
+set protocols bgp group {{ provider_ibgp.group.name }} neighbor {{ neighbor.ip }}
+{% endfor %}
+{% for routing_instance in routing_instances %}
+set routing-instances {{ routing_instance.name }} instance-type vrf
+{% for interface in logical_interfaces %}
+{% if interface.routing_instance is defined %}
+set routing-instances {{ interface.routing_instance }} interface {{ interface.name }}.{{ interface.unit }}
+{% endif %}
+{% endfor %}
+set routing-instances {{ routing_instance.name }} route-distinguisher {{ routing_instance.rd }}
+set routing-instances {{ routing_instance.name }} vrf-target {{ routing_instance.rt }}
+{% if routing_instance.bgp is defined %}
+set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} type {{ routing_instance.bgp.group.type }}
+set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} family inet unicast
+{% for neighbor in routing_instance.bgp.group.neighbors %}
+set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} peer-as {{ neighbor.asn }}
+set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} neighbor {{ neighbor.ip }}
+{% endfor %}
+{% endif %}
+{% endfor %}

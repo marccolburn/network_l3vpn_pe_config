@@ -1,0 +1,5 @@
+---
+- name: Configure L3VPN on PE running JUNOS
+  junos_config:
+    lines: "{{ lookup('template', 'junos_l3vpn_pe_config.j2').split('\n') }}"
+    comment: "Configured L3VPN PE"
