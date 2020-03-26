@@ -22,7 +22,7 @@ set routing-instances {{ routing_instance.name }} vrf-target {{ routing_instance
 set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} type {{ routing_instance.bgp.group.type }}
 set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} family inet unicast
 {% for neighbor in routing_instance.bgp.group.neighbors %}
-set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} peer-as {{ neighbor.asn }}
+set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} neighbor {{ neighbor.ip }} peer-as {{ neighbor.asn }}
 set routing-instances {{ routing_instance.name }} protocols bgp group {{ routing_instance.bgp.group.name }} neighbor {{ neighbor.ip }}
 {% endfor %}
 {% endif %}
