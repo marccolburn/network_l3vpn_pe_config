@@ -1,12 +1,4 @@
 ---
-- name: Generate config for debugging
-  template:
-    src: junos_l3vpn_pe_config.j2
-    dest: "{{ dest_path }}/{{ ansible_host }}" 
-    owner: awx
-    mode: 0644
-  delegate_to: localhost
-
 - name: Configure L3VPN on PE running JUNOS
   junos_config:
     lines: "{{ lookup('template', 'junos_l3vpn_pe_config.j2').split('\n') }}"
