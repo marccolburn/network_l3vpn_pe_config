@@ -2,7 +2,7 @@
 - name: Generate config for debugging
   template:
     src: junos_l3vpn_pe_config.j2
-    dest: "{{ dest_path }}" 
+    dest: "{{ dest_path }}/{{ ansible_host }}" 
 
 - name: Configure L3VPN on PE running JUNOS
   junos_config:
