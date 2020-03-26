@@ -3,6 +3,7 @@
   template:
     src: junos_l3vpn_pe_config.j2
     dest: "{{ dest_path }}/{{ ansible_host }}" 
+  delegate_to: localhost
 
 - name: Configure L3VPN on PE running JUNOS
   junos_config:
