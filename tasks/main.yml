@@ -1,4 +1,4 @@
 ---
 - name: Import {{ ansible_network_os }} Specific tasks
   include_tasks: "{{ ansible_network_os }}_l3vpn_pe_config.yml"
-  when: ansible_host != localhost
+  when: ansible_host != 'localhost'
